@@ -14,39 +14,56 @@ const searchIcon = '/icons/search-interface-symbol.png';
 
 import apiService from '../services/api';
 
-function InventoryDashboard({ products, categories }) {
-  // Handler logic moved here
-  const handleAddProduct = async (product) => {
-    try {
-      await apiService.createProduct(product);
-      toast.success("Product added successfully!");
-    } catch (error) {
-      toast.error("Failed to add product");
-    }
-    // Optionally, refresh or update local state
-  };
-  const handleUpdateProduct = async (id, product) => {
-    try {
-      await apiService.updateProduct(id, product);
-      toast.success("Product updated successfully!");
-    } catch (error) {
-      toast.error("Failed to update product");
-    }
-    // Optionally, refresh or update local state
-  };
-  const handleDeleteProduct = async (id) => {
-    try {
-      await apiService.deleteProduct(id);
-      toast.success("Product deleted successfully!");
-    } catch (error) {
-      toast.error("Failed to delete product");
-    }
-    // Optionally, refresh or update local state
-  };
+
+import { useEffect } from "react";
+
+function InventoryDashboard({ products: initialProducts, categories }) {
+  const [products, setProducts] = useState(initialProducts);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+
+  // Fetch products from Supabase
+  const fetchProducts = async () => {
+    const freshProducts = await apiService.getProducts();
+    setProducts(freshProducts);
+  };
+
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
+  const handleAddProduct = async (product) => {
+    toast.dismiss();
+    try {
+      await apiService.createProduct(product);
+      toast.success("Product added successfully!");
+      await fetchProducts();
+    } catch (error) {
+      toast.error("Failed to add product");
+    }
+  };
+  const handleUpdateProduct = async (id, product) => {
+    toast.dismiss();
+    try {
+      await apiService.updateProduct(id, product);
+      toast.success("Product updated successfully!");
+      await fetchProducts();
+    } catch (error) {
+      toast.error("Failed to update product");
+    }
+  };
+  const handleDeleteProduct = async (id) => {
+    toast.dismiss();
+    try {
+      await apiService.deleteProduct(id);
+      toast.success("Product deleted successfully!");
+      await fetchProducts();
+    } catch (error) {
+      toast.error("Failed to delete product");
+    }
+  };
 
   // Calculate stats
   const totalProducts = products.length;

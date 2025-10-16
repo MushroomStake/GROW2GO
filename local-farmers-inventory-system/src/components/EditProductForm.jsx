@@ -64,10 +64,9 @@ function EditProductForm({ product, categories, onUpdateProduct, onDeleteProduct
       };
 
       await onUpdateProduct(product.id, productData);
-      toast.success('Product updated successfully!');
       onClose();
     } catch (error) {
-      toast.error('Failed to update product: ' + error.message);
+      onClose(); // Optionally close modal on error
     }
   };
 
