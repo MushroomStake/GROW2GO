@@ -1,0 +1,258 @@
+.product-list {
+  width: 100%;
+}
+
+.product-list-header {
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.product-list-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.product-list-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.product-table {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 0.8fr 1fr 1fr 1fr;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-cell {
+  padding: 1rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.table-body {
+  background: white;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 0.8fr 1fr 1fr 1fr;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.1s;
+}
+
+.table-row:hover {
+  background: #f9fafb;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-cell {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.product-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.category-text {
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.quantity {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.name-unit { color: #6b7280; font-weight: 400; margin-left: 6px; }
+
+/* Action buttons */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: #374151;
+  font-weight: 500;
+}
+
+.update-btn:focus,
+.update-btn:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+/* Desktop responsiveness improvements */
+@media (min-width: 1024px) {
+  .product-table {
+    font-size: 0.9rem;
+  }
+  
+  .table-header {
+    grid-template-columns: 3fr 1fr 1.5fr 1.5fr 1.5fr;
+  }
+  
+  .table-row {
+    grid-template-columns: 3fr 1fr 1.5fr 1.5fr 1.5fr;
+  }
+  
+  .table-cell {
+    padding: 1.25rem 1rem;
+  }
+  
+  .header-cell {
+    padding: 1.25rem 1rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-table {
+    max-width: none;
+    font-size: 1rem;
+  }
+  
+  .table-header {
+    grid-template-columns: 4fr 1.5fr 2fr 2fr 2fr;
+  }
+  
+  .table-row {
+    grid-template-columns: 4fr 1.5fr 2fr 2fr 2fr;
+  }
+  
+  .table-cell {
+    padding: 1.5rem 1.25rem;
+  }
+  
+  .header-cell {
+    padding: 1.5rem 1.25rem;
+    font-size: 0.95rem;
+  }
+  
+  .product-name {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .product-list {
+    width: 100%;
+    margin: 0;
+  }
+  
+  .product-table {
+    width: 100%;
+    margin: 0;
+  }
+  
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+    width: 100%;
+  }
+  
+  .table-row {
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    background: white;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .table-cell {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f3f4f6;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .table-cell:last-child {
+    border-bottom: none;
+  }
+  
+  .header-cell {
+    display: none;
+  }
+  
+  .table-cell::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6b7280;
+    font-size: 0.75rem;
+    margin-right: 1rem;
+  }
+  
+  .product-name::before {
+    content: "Product: ";
+  }
+  
+  .category::before {
+    content: "Category: ";
+  }
+  
+  .quantity::before {
+    content: "Quantity: ";
+  }
+  .unit::before {
+    content: "Unit: ";
+  }
+  /* Unit is inline with product name on mobile; no separate label needed */
+  
+  .actions::before {
+    content: "Actions: ";
+  }
+  
+  .actions {
+    justify-content: flex-end;
+  }
+  
+  .action-btn {
+    padding: 0.4rem;
+    font-size: 0.9rem;
+    min-width: 1.8rem;
+    height: 1.8rem;
+  }
+}
