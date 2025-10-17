@@ -99,7 +99,8 @@ function InventoryDashboard({ products: initialProducts, categories }) {
 
   return (
     <div className="inventory-dashboard">
-      <div className="api-status-bar">
+      <div style={{ display: 'none' }} aria-hidden>
+        {/* API status bar hidden for now; kept for future debugging */}
         <span className={`status-dot ${apiStatus.status === 'ok' ? 'ok' : apiStatus.status === 'error' ? 'error' : 'unknown'}`} />
         <span className="status-text">API: {apiStatus.status}</span>
         {apiStatus.message && <span className="status-msg">{apiStatus.message}</span>}
