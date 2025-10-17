@@ -21,6 +21,7 @@ function InventoryDashboard({ products: initialProducts, categories }) {
   const [products, setProducts] = useState(initialProducts);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [apiStatus, setApiStatus] = useState({ status: 'unknown', message: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -32,6 +33,15 @@ function InventoryDashboard({ products: initialProducts, categories }) {
 
   useEffect(() => {
     setProducts(initialProducts);
+    // Run a quick health check
+    (async () => {
+      try {
+        const res = await apiService.healthCheck();
+        setApiStatus({ status: 'ok', message: res.message });
+      } catch (err) {
+        setApiStatus({ status: 'error', message: err.message || String(err) });
+      }
+    })();
   }, [initialProducts]);
 
   const handleAddProduct = async (product) => {
@@ -61,6 +71,8 @@ function InventoryDashboard({ products: initialProducts, categories }) {
       toast.success("Product deleted successfully!");
       await fetchProducts();
     } catch (error) {
+      console.error('Delete failed:', error);
+      setApiStatus({ status: 'error', message: error.message || String(error) });
       toast.error("Failed to delete product");
     }
   };
@@ -87,6 +99,12 @@ function InventoryDashboard({ products: initialProducts, categories }) {
 
   return (
     <div className="inventory-dashboard">
+      <div className="api-status-bar">
+        <span className={`status-dot ${apiStatus.status === 'ok' ? 'ok' : apiStatus.status === 'error' ? 'error' : 'unknown'}`} />
+        <span className="status-text">API: {apiStatus.status}</span>
+        {apiStatus.message && <span className="status-msg">{apiStatus.message}</span>}
+        <button className="recheck-btn" onClick={fetchProducts}>Re-check</button>
+      </div>
       <div className="dashboard-content">
         {/* Inventory Overview */}
         <section className="inventory-overview">

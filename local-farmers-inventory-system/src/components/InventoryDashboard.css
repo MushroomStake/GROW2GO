@@ -19,6 +19,28 @@
   gap: 2rem;
 }
 
+.api-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #fff7ed;
+  border-radius: 6px;
+  margin: 12px 20px;
+}
+.api-status-bar .status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.api-status-bar .status-dot.ok { background: #10b981; }
+.api-status-bar .status-dot.error { background: #ef4444; }
+.api-status-bar .status-dot.unknown { background: #f59e0b; }
+.api-status-bar .status-text { font-weight: 600; }
+.api-status-bar .status-msg { margin-left: 8px; color: #6b7280; }
+.api-status-bar .recheck-btn { margin-left: auto; background: transparent; border: none; color: #374151; cursor: pointer; }
+
 /* Inventory Overview Section */
 .inventory-overview h2 {
   margin: 0 0 1.5rem 0;
