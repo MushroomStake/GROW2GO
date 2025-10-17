@@ -37,7 +37,7 @@
   display: grid;
   display: grid;
   /* columns: name | unit | price | category | quantity | actions */
-  grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 4fr 1.5fr 1.5fr 1.5fr 1.5fr;
   background: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -57,7 +57,7 @@
 .table-row {
     display: grid;
     /* columns: name | unit | price | category | quantity | actions */
-  grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 4fr 1.5fr 1.5fr 1.5fr 1.5fr;
   border-bottom: 1px solid #f3f4f6;
   transition: background-color 0.1s;
 }
@@ -105,10 +105,7 @@
 .name-unit { color: #6b7280; font-weight: 400; margin-left: 6px; }
 
 /* Make unit text more legible */
-.unit {
-  color: #111827; /* darker for better contrast */
-  font-weight: 600;
-}
+/* unit column removed */
 
 /* Action buttons */
 .actions {
@@ -146,7 +143,7 @@
   
   .table-header {
     /* name | unit | price | category | quantity | actions */
-    grid-template-columns: 3fr 1fr 1fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 4fr 1.5fr 1.5fr 1.5fr 1.5fr;
   }
   
   .table-row {
@@ -173,11 +170,11 @@
   
   .table-header {
     /* name | unit | price | category | quantity | actions */
-    grid-template-columns: 4fr 1.5fr 2fr 2fr 2fr 2fr;
+  grid-template-columns: 5fr 2fr 2fr 2fr 2fr;
   }
   
   .table-row {
-    grid-template-columns: 4fr 1.5fr 2fr 2fr 2fr 2fr;
+  grid-template-columns: 5fr 2fr 2fr 2fr 2fr;
   }
   
   .table-cell {
@@ -261,9 +258,6 @@
   .quantity::before {
     content: "Quantity: ";
   }
-  .unit::before {
-    content: "Unit: ";
-  }
   /* Unit is inline with product name on mobile; no separate label needed */
   
   .actions::before {
@@ -290,12 +284,7 @@
   text-align: right;
 }
 
-.unit {
-  color: #6b7280 !important;
-  font-weight: 400 !important;
-}
-
-.table-header .header-cell:nth-child(3) {
+.table-header .header-cell:nth-child(2) {
   text-align: right;
 }
 

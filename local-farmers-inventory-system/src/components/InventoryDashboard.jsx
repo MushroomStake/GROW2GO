@@ -111,7 +111,8 @@ function InventoryDashboard({ products: initialProducts, categories }) {
 
   // Filter products based on search and category
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const q = searchTerm.toLowerCase();
+    const matchesSearch = product.name.toLowerCase().includes(q) || (product.category || '').toLowerCase().includes(q);
     const matchesCategory = selectedCategory === '' || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
