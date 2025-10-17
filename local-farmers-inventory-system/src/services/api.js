@@ -16,9 +16,22 @@ class ApiService {
     };
 
     try {
+      // Client-side debug logging (only when window is available)
+      const start = Date.now();
+      if (typeof window !== 'undefined') {
+        try {
+          console.debug('[API] Request', { method: config.method || 'GET', url, body: config.body });
+        } catch (e) {}
+      }
       const response = await fetch(url, config);
+      const duration = Date.now() - start;
+      let text;
+      try { text = await response.clone().text(); } catch (e) { text = '<no-body>'; }
+      if (typeof window !== 'undefined') {
+        console.debug('[API] Response', { url, status: response.status, duration, body: text });
+      }
       if (!response.ok) {
-        const errorData = await response.text();
+        const errorData = text;
         throw new Error(`API request failed: ${response.status} ${errorData}`);
       }
       if (response.status === 204) {

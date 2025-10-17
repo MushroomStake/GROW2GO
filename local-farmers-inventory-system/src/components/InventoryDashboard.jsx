@@ -42,6 +42,22 @@ function InventoryDashboard({ products: initialProducts, categories }) {
         setApiStatus({ status: 'error', message: err.message || String(err) });
       }
     })();
+
+    // Optional debug: if ?debug=storage or ?debug=clearstorage is present, log or clear localStorage
+    try {
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('debug') === 'storage') {
+          console.info('localStorage contents:', { ...localStorage });
+        }
+        if (params.get('debug') === 'clearstorage') {
+          localStorage.clear();
+          console.info('localStorage cleared');
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
   }, [initialProducts]);
 
   const handleAddProduct = async (product) => {
