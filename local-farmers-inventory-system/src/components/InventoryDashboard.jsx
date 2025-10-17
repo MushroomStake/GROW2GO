@@ -18,7 +18,7 @@ import apiService from '../services/api';
 import { useEffect } from "react";
 
 function InventoryDashboard({ products: initialProducts, categories }) {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState(initialProducts || []);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [apiStatus, setApiStatus] = useState({ status: 'unknown', message: '' });
@@ -28,18 +28,26 @@ function InventoryDashboard({ products: initialProducts, categories }) {
   // Fetch products from Supabase
   const fetchProducts = async () => {
     const freshProducts = await apiService.getProducts();
-    setProducts(freshProducts);
+    setProducts(freshProducts || []);
   };
 
   useEffect(() => {
-    setProducts(initialProducts);
-    // Run a quick health check
+    setProducts(initialProducts || []);
+
+    // Run a quick health check and then force a client-side refresh of products
     (async () => {
       try {
         const res = await apiService.healthCheck();
         setApiStatus({ status: 'ok', message: res.message });
       } catch (err) {
         setApiStatus({ status: 'error', message: err.message || String(err) });
+      }
+
+      // Force a client-side refresh of products to avoid showing stale SSR data
+      try {
+        await fetchProducts();
+      } catch (e) {
+        // ignore
       }
     })();
 
@@ -94,9 +102,10 @@ function InventoryDashboard({ products: initialProducts, categories }) {
   };
 
   // Calculate stats
-  const totalProducts = products.length;
-  const totalQuantity = products.reduce((sum, product) => sum + product.quantity, 0);
-  const categoriesCount = [...new Set(products.map(p => p.category))].length;
+  const safeProducts = products || [];
+  const totalProducts = safeProducts.length;
+  const totalQuantity = safeProducts.reduce((sum, product) => sum + (product.quantity || 0), 0);
+  const categoriesCount = [...new Set(safeProducts.map(p => p.category || ''))].filter(Boolean).length;
 
   // Filter products based on search and category
   const filteredProducts = products.filter(product => {
