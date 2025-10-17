@@ -30,6 +30,7 @@ function ProductList({ products, onEditProduct }) {
         <div className="table-header">
           <div className="header-cell">Product Name</div>
           <div className="header-cell">Unit</div>
+          <div className="header-cell">Price</div>
           <div className="header-cell">Category</div>
           <div className="header-cell">Quantity</div>
           <div className="header-cell">Actions</div>
@@ -45,6 +46,14 @@ function ProductList({ products, onEditProduct }) {
               <div className="table-cell unit">
                 {product.unit}
               </div>
+
+                <div className="table-cell price" data-label="Price">
+                  {product.price !== null && product.price !== undefined ? (
+                    <span>{new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 2 }).format(product.price)} / {product.unit}</span>
+                  ) : (
+                    <span className="no-price">—</span>
+                  )}
+                </div>
               
               <div className="table-cell category">
                 <span className="category-text">

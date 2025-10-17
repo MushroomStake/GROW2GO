@@ -8,6 +8,7 @@ function AddProductForm({ categories, onAddProduct, onCancel }) {
     categoryId: '',
     customCategory: '',
     quantity: '',
+    price: '',
     unit: ''
   });
   const [showCustomCategory, setShowCustomCategory] = useState(false);
@@ -36,6 +37,12 @@ function AddProductForm({ categories, onAddProduct, onCancel }) {
       return;
     }
 
+    // Price is required and must be a number >= 0
+    if (formData.price === '' || isNaN(parseFloat(formData.price)) || parseFloat(formData.price) < 0) {
+      alert('Please enter a valid price (number >= 0)');
+      return;
+    }
+
     if (!formData.categoryId) {
       alert('Please select a category');
       return;
@@ -53,6 +60,7 @@ function AddProductForm({ categories, onAddProduct, onCancel }) {
         categoryId: formData.categoryId,
         customCategory: formData.customCategory,
         quantity: parseInt(formData.quantity),
+        price: formData.price === '' ? null : parseFloat(parseFloat(formData.price).toFixed(2)),
         unit: formData.unit,
         // Use custom category name if provided, otherwise use selected category
         category: formData.categoryId === 'custom' ? formData.customCategory.trim() : 
@@ -67,6 +75,7 @@ function AddProductForm({ categories, onAddProduct, onCancel }) {
         categoryId: '',
         customCategory: '',
         quantity: '',
+        price: '',
         unit: ''
       });
       setShowCustomCategory(false);
@@ -150,6 +159,21 @@ function AddProductForm({ categories, onAddProduct, onCancel }) {
               min="0"
               required
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="price">Price (per unit) *</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              required
+            />
+            <small className="form-hint">Enter the price per selected unit (e.g. per kg, per piece). This field is required.</small>
           </div>
 
           <div className="form-group">

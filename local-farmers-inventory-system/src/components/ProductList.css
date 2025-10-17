@@ -35,7 +35,9 @@
 
 .table-header {
   display: grid;
-  grid-template-columns: 2fr 0.8fr 1fr 1fr 1fr;
+  display: grid;
+  /* columns: name | unit | price | category | quantity | actions */
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr;
   background: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -53,8 +55,9 @@
 }
 
 .table-row {
-  display: grid;
-  grid-template-columns: 2fr 0.8fr 1fr 1fr 1fr;
+    display: grid;
+    /* columns: name | unit | price | category | quantity | actions */
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr;
   border-bottom: 1px solid #f3f4f6;
   transition: background-color 0.1s;
 }
@@ -74,6 +77,16 @@
   font-size: 0.875rem;
 }
 
+.price {
+  justify-content: flex-end;
+  color: #111827;
+  font-weight: 500;
+}
+
+.no-price {
+  color: #9ca3af;
+}
+
 .product-name {
   font-weight: 500;
   color: #1f2937;
@@ -90,6 +103,12 @@
 }
 
 .name-unit { color: #6b7280; font-weight: 400; margin-left: 6px; }
+
+/* Make unit text more legible */
+.unit {
+  color: #111827; /* darker for better contrast */
+  font-weight: 600;
+}
 
 /* Action buttons */
 .actions {
@@ -126,11 +145,12 @@
   }
   
   .table-header {
-    grid-template-columns: 3fr 1fr 1.5fr 1.5fr 1.5fr;
+    /* name | unit | price | category | quantity | actions */
+    grid-template-columns: 3fr 1fr 1fr 1.5fr 1.5fr 1.5fr;
   }
   
   .table-row {
-    grid-template-columns: 3fr 1fr 1.5fr 1.5fr 1.5fr;
+    grid-template-columns: 3fr 1fr 1fr 1.5fr 1.5fr 1.5fr;
   }
   
   .table-cell {
@@ -152,11 +172,12 @@
   }
   
   .table-header {
-    grid-template-columns: 4fr 1.5fr 2fr 2fr 2fr;
+    /* name | unit | price | category | quantity | actions */
+    grid-template-columns: 4fr 1.5fr 2fr 2fr 2fr 2fr;
   }
   
   .table-row {
-    grid-template-columns: 4fr 1.5fr 2fr 2fr 2fr;
+    grid-template-columns: 4fr 1.5fr 2fr 2fr 2fr 2fr;
   }
   
   .table-cell {
@@ -224,6 +245,10 @@
     font-size: 0.75rem;
     margin-right: 1rem;
   }
+
+  .price::before {
+    content: "Price: ";
+  }
   
   .product-name::before {
     content: "Product: ";
@@ -256,3 +281,21 @@
     height: 1.8rem;
   }
 }
+
+
+/* Overrides: make unit and price use category color and align price to the right */
+.price {
+  color: #6b7280 !important;
+  font-weight: 400 !important;
+  text-align: right;
+}
+
+.unit {
+  color: #6b7280 !important;
+  font-weight: 400 !important;
+}
+
+.table-header .header-cell:nth-child(3) {
+  text-align: right;
+}
+

@@ -24,6 +24,7 @@ function InventoryDashboard({ products: initialProducts, categories }) {
   const [apiStatus, setApiStatus] = useState({ status: 'unknown', message: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const showApiStatus = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SHOW_API_STATUS === 'true';
 
   // Fetch products from Supabase
   const fetchProducts = async () => {
@@ -106,6 +107,7 @@ function InventoryDashboard({ products: initialProducts, categories }) {
   const totalProducts = safeProducts.length;
   const totalQuantity = safeProducts.reduce((sum, product) => sum + (product.quantity || 0), 0);
   const categoriesCount = [...new Set(safeProducts.map(p => p.category || ''))].filter(Boolean).length;
+  
 
   // Filter products based on search and category
   const filteredProducts = products.filter(product => {
@@ -124,12 +126,14 @@ function InventoryDashboard({ products: initialProducts, categories }) {
 
   return (
     <div className="inventory-dashboard">
-      <div className="api-status-bar">
-        <span className={`status-dot ${apiStatus.status === 'ok' ? 'ok' : apiStatus.status === 'error' ? 'error' : 'unknown'}`} />
-        <span className="status-text">API: {apiStatus.status}</span>
-        {apiStatus.message && <span className="status-msg">{apiStatus.message}</span>}
-        <button className="recheck-btn" onClick={fetchProducts}>Re-check</button>
-      </div>
+      {showApiStatus && (
+        <div className="api-status-bar">
+          <span className={`status-dot ${apiStatus.status === 'ok' ? 'ok' : apiStatus.status === 'error' ? 'error' : 'unknown'}`} />
+          <span className="status-text">API: {apiStatus.status}</span>
+          {apiStatus.message && <span className="status-msg">{apiStatus.message}</span>}
+          <button className="recheck-btn" onClick={fetchProducts}>Re-check</button>
+        </div>
+      )}
       <div className="dashboard-content">
         {/* Inventory Overview */}
         <section className="inventory-overview">
@@ -162,6 +166,7 @@ function InventoryDashboard({ products: initialProducts, categories }) {
                 <img src={categoriesIcon} alt="Product Categories" />
               </div>
             </div>
+            
           </div>
         </section>
 
