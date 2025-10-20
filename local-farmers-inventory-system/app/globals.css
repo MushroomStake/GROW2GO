@@ -10,6 +10,13 @@
   }
 }
 
+/* Utility to force the site into light mode regardless of OS preference */
+.force-light {
+  --background: #ffffff !important;
+  --foreground: #111827 !important;
+  color-scheme: light !important;
+}
+
 html,
 body {
   max-width: 100vw;

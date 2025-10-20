@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import ProductList from './ProductList.jsx';
 import AddProductForm from './AddProductForm.jsx';
@@ -13,12 +13,14 @@ const categoriesIcon = '/icons/categories.png';
 const searchIcon = '/icons/search-interface-symbol.png';
 
 import apiService from '../services/api';
-
-
-import { useEffect } from "react";
+import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 function InventoryDashboard({ products: initialProducts, categories }) {
   const [products, setProducts] = useState(initialProducts || []);
+  const [categoriesList, setCategoriesList] = useState(categories || []);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+  const [categoriesError, setCategoriesError] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [apiStatus, setApiStatus] = useState({ status: 'unknown', message: '' });
@@ -26,14 +28,38 @@ function InventoryDashboard({ products: initialProducts, categories }) {
   const [selectedCategory, setSelectedCategory] = useState('');
   const showApiStatus = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SHOW_API_STATUS === 'true';
 
+  // auth + router (client-side)
+  const { user } = useAuth();
+  const router = useRouter();
+
   // Fetch products from Supabase
   const fetchProducts = async () => {
     const freshProducts = await apiService.getProducts();
     setProducts(freshProducts || []);
   };
 
+  const fetchCategories = async () => {
+    setCategoriesLoading(true);
+    setCategoriesError(null);
+    try {
+      const cats = await apiService.getCategories();
+      setCategoriesList(cats || []);
+    } catch (e) {
+      console.error('Failed to fetch categories', e);
+      setCategoriesError(e?.message || String(e));
+    } finally {
+      setCategoriesLoading(false);
+    }
+  };
+
   useEffect(() => {
     setProducts(initialProducts || []);
+    // If parent didn't provide categories, fetch them client-side
+    if (!categories || (Array.isArray(categories) && categories.length === 0)) {
+      fetchCategories();
+    } else {
+      setCategoriesList(categories);
+    }
 
     // Run a quick health check and then force a client-side refresh of products
     (async () => {
@@ -68,6 +94,19 @@ function InventoryDashboard({ products: initialProducts, categories }) {
       // ignore
     }
   }, [initialProducts]);
+
+  // Redirect non-admin users away from the Inventory Dashboard to the product overview
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    // If user is not set yet, wait; the AuthContext initializes from localStorage or server
+    if (user === null || user === undefined) return;
+    const isAdminFlag = !!(user && (user.isAdmin === true || user.is_admin === true));
+    if (!isAdminFlag) {
+      // show a short not-authorized flash and then redirect so the user understands why
+      try { toast.error('Not authorized — redirecting to product overview'); } catch (e) {}
+      setTimeout(() => router.push('/'), 900);
+    }
+  }, [user, router]);
 
   const handleAddProduct = async (product) => {
     toast.dismiss();
@@ -193,10 +232,13 @@ function InventoryDashboard({ products: initialProducts, categories }) {
               className="filter-select"
             >
               <option value="">Filter by Category</option>
-              {categories.map(category => (
+              {categoriesList.map(category => (
                 <option key={category.id} value={category.name}>{category.name}</option>
               ))}
             </select>
+            {categoriesLoading && <div className="small muted">Loading categories…</div>}
+            {!categoriesLoading && categoriesError && <div className="small error">Failed to load categories: {categoriesError}</div>}
+            {!categoriesLoading && !categoriesError && categoriesList.length === 0 && <div className="small muted">No categories available</div>}
           </div>
           
           <button 
@@ -220,7 +262,7 @@ function InventoryDashboard({ products: initialProducts, categories }) {
         <div className="modal-overlay" onClick={() => setShowAddForm(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <AddProductForm 
-              categories={categories}
+              categories={categoriesList}
               onAddProduct={async (product) => {
                 await handleAddProduct(product);
                 setShowAddForm(false);
@@ -234,7 +276,7 @@ function InventoryDashboard({ products: initialProducts, categories }) {
       {editingProduct && (
         <EditProductForm 
           product={editingProduct}
-          categories={categories}
+          categories={categoriesList}
           onUpdateProduct={handleUpdateProduct}
           onDeleteProduct={handleDeleteProduct}
           onClose={handleCloseEditForm}

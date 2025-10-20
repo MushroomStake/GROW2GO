@@ -18,6 +18,17 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+Syncing auth users into demo table
+---------------------------------
+If you need to populate the `users_demo` table with existing Supabase Auth users, there's a helper script:
+
+```bash
+SUPABASE_URL=https://your-project.supabase.co SUPABASE_SERVICE_ROLE_KEY=your_service_role_key node scripts/sync-auth-to-demo.js
+# add --dry-run to preview without inserting
+```
+
+The script will list auth users and insert missing rows into `users_demo` for convenience in demo mode.
+
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
