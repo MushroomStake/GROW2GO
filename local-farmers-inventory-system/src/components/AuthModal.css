@@ -29,6 +29,13 @@
 /* Password toggle */
 .password-input{ padding-right:46px; }
 .password-toggle{ position:absolute; right:8px; top:8px; border:none; background:transparent; padding:4px; display:flex; align-items:center; justify-content:center; color:#374151; cursor:pointer; }
+
+
+/* Review-specific readonly password styling (left icon inside) */
+.password-wrapper{ position:relative; }
+.review-readonly{ padding-left:40px; padding-right:12px; box-sizing:border-box; }
+.password-wrapper .password-toggle{ top:8px; right:8px; }
+.password-wrapper .password-toggle:hover{ color:#111827; }
 .password-toggle:hover{ color:#111827; }
 
 .auth-error{ color:#b91c1c; background:#fff1f2; padding:8px 10px; border-radius:8px; margin-bottom:8px; border:1px solid #fecaca; }
@@ -59,6 +66,18 @@
 .review-row:last-child{ border-bottom:none; }
 .review-val{ color:#0f172a; margin-top:4px; font-weight:500; }
 .review-row .link{ padding:4px 8px; border-radius:6px; }
+
+/* Styled readonly password in review step */
+.review-val .password-input[readonly]{ border:1px dashed #e6eef6; padding:12px 44px 12px 14px; border-radius:10px; background:transparent; width:100%; max-width:420px; box-sizing:border-box; font-size:14px; }
+.review-val .password-toggle{ background:transparent; border:none; cursor:pointer; color:#374151; padding:6px; }
+
+/* Tighter wrapper to match primary input height and alignment */
+.password-wrapper{ display:inline-block; width:100%; max-width:420px; }
+.password-wrapper .review-readonly{ height:auto; line-height:20px; }
+.password-wrapper .password-toggle.left{ left:12px; }
+
+/* Improve visual focus ring match for read-only review */
+.review-val .password-input[readonly]:focus-visible{ outline: 3px solid rgba(59,130,246,0.12); outline-offset: 2px; }
 
 @keyframes auth-entrance { from { transform: translateY(6px); opacity:0 } to { transform: translateY(0); opacity:1 } }
 @keyframes spin { to { transform: rotate(360deg); } }

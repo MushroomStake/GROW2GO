@@ -44,6 +44,7 @@ export default function AuthModal({ open, onClose }) {
   const auth = useAuth();
   const modalRef = useRef(null);
   const firstInputRef = useRef(null);
+  const [reviewShowPassword, setReviewShowPassword] = useState(false);
 
   // reset modal to initial login state when opened
   useEffect(() => {
@@ -361,7 +362,29 @@ export default function AuthModal({ open, onClose }) {
                     <div className="review-row"><div><strong>Full name</strong><div className="review-val">{form.name}</div></div></div>
                     <div className="review-row"><div><strong>Email</strong><div className="review-val">{form.email}</div></div></div>
                     <div className="review-row"><div><strong>Contact</strong><div className="review-val">{form.contact}</div></div></div>
-                    <div className="review-row"><div><strong>Password strength</strong><div className="review-val">{strengthLabel(analyzePassword(form.password || '').score)}</div></div></div>
+                    <div className="review-row">
+                      <div>
+                        <strong>Password</strong>
+                        <div className="review-val">
+                            <div className="password-wrapper" style={{ position: 'relative', width: 220 }}>
+                              <button type="button" className="password-toggle" aria-label={reviewShowPassword ? 'Hide password' : 'Show password'} onClick={() => setReviewShowPassword(v => !v)}>
+                                {reviewShowPassword ? (
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                                    <path d="M3 3L21 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    <path d="M10.58 10.58A3 3 0 0 0 13.42 13.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                  </svg>
+                                ) : (
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                  </svg>
+                                )}
+                              </button>
+                              <input className="password-input review-readonly" readOnly type={reviewShowPassword ? 'text' : 'password'} value={form.password} />
+                            </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
