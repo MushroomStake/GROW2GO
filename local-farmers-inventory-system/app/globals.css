@@ -61,3 +61,11 @@ a {
     color-scheme: dark;
   }
 }
+
+@keyframes popover-pop{
+  0%{ opacity:0; transform: translateY(-6px) scale(.995); }
+  100%{ opacity:1; transform: translateY(0) scale(1); }
+}
+
+/* small utility to apply the popover-pop animation */
+.popover-pop{ animation: popover-pop 180ms cubic-bezier(.2,.8,.2,1) both; }

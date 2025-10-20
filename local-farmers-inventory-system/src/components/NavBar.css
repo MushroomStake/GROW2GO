@@ -47,7 +47,20 @@
 .profile-initials{ width:28px; height:28px; border-radius:50%; background:#e5e7eb; color:#111827; display:flex; align-items:center; justify-content:center; font-weight:700; }
 .profile-btn:focus{ outline: none; }
 .nav-profile{ position:relative; }
-.profile-menu{ position:absolute; right:0; top:40px; background:#fff; border:1px solid #e5e7eb; padding:8px; border-radius:8px; box-shadow:0 6px 18px rgba(2,6,23,0.08); min-width:180px; z-index:50; }
+.profile-menu{ position:absolute; right:0; top:48px; background:#fff; border:1px solid #e5e7eb; padding:8px; border-radius:8px; box-shadow:0 18px 48px rgba(2,6,23,0.12); min-width:220px; z-index:2050; animation: popover-pop 180ms cubic-bezier(.2,.8,.2,1) both; }
+.profile-menu::before{
+  content: '';
+  position: absolute;
+  right: 26px; /* position caret near the profile icon on the right */
+  top: -10px; /* move caret slightly further up to create more visible gap */
+  transform: translateX(50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius:2px;
+  box-shadow: 0 4px 12px rgba(2,6,23,0.08);
+  z-index: 2049;
+}
 .profile-item{ padding:6px 8px; }
 .profile-item.small{ font-size:12px; color:#6b7280; }
 .profile-actions{ display:flex; gap:8px; padding-top:8px; border-top:1px solid #f3f4f6; justify-content:flex-end; }
@@ -87,6 +100,10 @@
   .gf-nav-inner{ padding: 10px 12px; }
   .gf-links{ display:none; position:absolute; top:64px; left:0; right:0; background:var(--background); flex-direction:column; gap:0; border-top:1px solid #e5e7eb; padding:8px 12px; }
   .gf-links.open{ display:flex; }
+  /* give the mobile menu a popover look (rounded, shadowed) on open */
+  .gf-links.open{ border-radius:10px; box-shadow:0 18px 48px rgba(2,6,23,0.12); padding:10px; margin:8px; left:8px; right:8px; top:74px; }
+  /* use same pop animation for the mobile nav panel */
+  .gf-links{ animation: popover-pop 180ms cubic-bezier(.2,.8,.2,1) both; }
   .gf-links a, .gf-links button.nav-btn{ width:100%; text-align:left; padding:10px 12px; border-radius:6px; }
   .gf-brand{ font-size:18px; }
   .mobile-toggle{ display:flex; }

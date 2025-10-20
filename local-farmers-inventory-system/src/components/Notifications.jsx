@@ -52,7 +52,8 @@ export default function Notifications({ open, onClose, anchorRect }) {
   // compute left so that caret tip will be at modalWidth - desiredRightOffset
   const preferredLeft = Math.round(anchorCenter - (modalWidth - desiredRightOffset));
   let left = Math.max(8, Math.min(preferredLeft, viewportW - modalWidth - 8));
-    const top = Math.round(anchorRect.bottom + 8);
+  // add a slightly larger gap beneath the anchor so the popover doesn't touch the icon
+  const top = Math.round(anchorRect.bottom + 12);
   // arrowLeft is the x offset from modal left to the arrow tip
   let arrowLeft = anchorCenter - left;
     // clamp arrow inside modal content area with some breathing room

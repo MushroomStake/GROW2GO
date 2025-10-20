@@ -4,6 +4,9 @@
 .auth-subtitle{ margin:0 0 14px 0; font-size:13px; color:#374151; }
 .auth-modal input{ width:100%; padding:12px 14px; border:1px solid #e6e9ee; border-radius:10px; margin-bottom:12px; transition:box-shadow .12s, border-color .12s; }
 .auth-modal input:focus{ outline:none; border-color: rgba(16,185,129,0.9); box-shadow:0 6px 18px rgba(16,185,129,0.08); }
+
+/* keyboard focus ring for accessibility */
+.auth-modal input:focus-visible, .auth-modal button:focus-visible, .auth-modal a:focus-visible { outline: 3px solid rgba(59,130,246,0.18); outline-offset: 2px; }
 .auth-actions{ display:flex; gap:10px; align-items:center; margin-top:12px; justify-content:flex-end; }
 .auth-actions .primary{ background:#10b981; color:white; border:none; padding:10px 14px; border-radius:10px; cursor:pointer; box-shadow: 0 6px 18px rgba(16,185,129,0.12); }
 .auth-actions .primary:hover{ transform:translateY(-1px); }
@@ -29,6 +32,33 @@
 .password-toggle:hover{ color:#111827; }
 
 .auth-error{ color:#b91c1c; background:#fff1f2; padding:8px 10px; border-radius:8px; margin-bottom:8px; border:1px solid #fecaca; }
+
+/* Important error highlight for required personal fields */
+.auth-errors.important{ color:#7f1d1d; background:#fff1f2; padding:10px 12px; border-radius:8px; margin-bottom:10px; border:1px solid #fca5a5; font-weight:600; }
+.auth-errors{ color:#b91c1c; background:#fff1f2; padding:8px 10px; border-radius:8px; margin-bottom:8px; border:1px solid #fecaca; }
+
+/* Password strength meter */
+.pw-meter{ margin-top:6px; margin-bottom:10px; }
+.pw-bar{ height:10px; background:#eef2ff; border-radius:8px; overflow:hidden; display:inline-block; vertical-align:middle; width:66%; }
+.pw-fill{ height:100%; width:0%; background:linear-gradient(90deg,#ef4444,#f59e0b,#10b981); transition:width .18s ease; }
+.pw-label{ font-size:13px; color:#374151; margin-left:10px; display:inline-block; vertical-align:middle; font-weight:600; }
+.pw-checklist{ margin-top:8px; font-size:13px; color:#374151; display:flex; flex-direction:column; gap:6px; }
+
+/* Collapsible checklist - hidden by default to shorten the form */
+.pw-checklist.collapsed{ display:none; }
+.pw-toggle{ font-size:12px; color:#2563eb; cursor:pointer; margin-top:6px; }
+.pw-check{ display:flex; gap:8px; align-items:center; color:#6b7280; }
+.pw-check.ok{ color:#065f46; }
+.pw-check .dot{ width:12px; height:12px; border-radius:50%; display:inline-block; background:#e6e9ee; }
+.pw-check.ok .dot{ background:#10b981; }
+.pw-small{ font-size:12px; color:#6b7280; margin-top:6px; }
+
+/* Review summary styling for step 3 */
+.review-box{ border:1px solid #eef2f6; background:#ffffff; padding:12px; border-radius:8px; margin-top:8px; }
+.review-row{ display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px dashed #f1f5f9; }
+.review-row:last-child{ border-bottom:none; }
+.review-val{ color:#0f172a; margin-top:4px; font-weight:500; }
+.review-row .link{ padding:4px 8px; border-radius:6px; }
 
 @keyframes auth-entrance { from { transform: translateY(6px); opacity:0 } to { transform: translateY(0); opacity:1 } }
 @keyframes spin { to { transform: rotate(360deg); } }

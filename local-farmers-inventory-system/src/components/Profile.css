@@ -1,6 +1,14 @@
 /* Profile modal and page styling */
 .profile { padding: 12px 6px; max-width: 360px; }
 .profile { position: relative; }
+.auth-modal .profile{
+	/* match notifications popover styling for consistency */
+	box-shadow: 0 18px 48px rgba(2,6,23,0.12);
+	border-radius:12px;
+	padding:14px;
+	background: #fff;
+	animation: popover-pop 180ms cubic-bezier(.2,.8,.2,1) both;
+}
 .profile .avatar { width:72px; height:72px; border-radius:12px; background:#f3f4f6; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:28px; color:#0f172a; margin-right:12px; }
 .profile .head { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
 .profile h3 { margin:0; font-size:18px; }
