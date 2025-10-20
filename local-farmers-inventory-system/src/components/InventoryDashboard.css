@@ -1,7 +1,8 @@
 .inventory-dashboard {
   min-height: 100vh;
   padding: 2rem;
-  background: #f8fafc;
+  /* use global background instead of forcing a panel color */
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;

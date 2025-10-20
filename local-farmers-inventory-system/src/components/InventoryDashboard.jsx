@@ -14,7 +14,7 @@ const searchIcon = '/icons/search-interface-symbol.png';
 
 import apiService from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 function InventoryDashboard({ products: initialProducts, categories }) {
   const [products, setProducts] = useState(initialProducts || []);
@@ -108,10 +108,45 @@ function InventoryDashboard({ products: initialProducts, categories }) {
     }
   }, [user, router]);
 
+  // If a productId query param is present, scroll to and highlight that product row
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const pid = searchParams ? searchParams.get('productId') : null;
+    if (!pid) return;
+
+    // Attempt to find the element after products are loaded. Try a few times with delays
+    let attempts = 0;
+    let cancelled = false;
+    const tryScroll = () => {
+      attempts += 1;
+      const el = document.querySelector(`[data-product-id="${pid}"]`);
+      if (el) {
+        try {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.classList.add('highlight');
+          setTimeout(() => el.classList.remove('highlight'), 2600);
+        } catch (e) {
+          // ignore
+        }
+        return;
+      }
+      if (attempts < 6 && !cancelled) {
+        setTimeout(tryScroll, 350);
+      }
+    };
+    // kick off after a tiny delay so rendering can start
+    setTimeout(tryScroll, 150);
+    return () => { cancelled = true; };
+  }, [products, searchParams]);
+
   const handleAddProduct = async (product) => {
     toast.dismiss();
     try {
       await apiService.createProduct(product);
+      // notify other parts of the app that inventory changed
+  try { window.dispatchEvent(new Event('inventory_changed')); } catch (e) {}
+  try { localStorage.setItem('inventory_changed_at', String(Date.now())); } catch (e) {}
       toast.success("Product added successfully!");
       await fetchProducts();
     } catch (error) {
@@ -122,6 +157,8 @@ function InventoryDashboard({ products: initialProducts, categories }) {
     toast.dismiss();
     try {
       await apiService.updateProduct(id, product);
+  try { window.dispatchEvent(new Event('inventory_changed')); } catch (e) {}
+  try { localStorage.setItem('inventory_changed_at', String(Date.now())); } catch (e) {}
       toast.success("Product updated successfully!");
       await fetchProducts();
     } catch (error) {
@@ -132,6 +169,8 @@ function InventoryDashboard({ products: initialProducts, categories }) {
     toast.dismiss();
     try {
       await apiService.deleteProduct(id);
+  try { window.dispatchEvent(new Event('inventory_changed')); } catch (e) {}
+  try { localStorage.setItem('inventory_changed_at', String(Date.now())); } catch (e) {}
       toast.success("Product deleted successfully!");
       await fetchProducts();
     } catch (error) {

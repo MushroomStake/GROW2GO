@@ -73,6 +73,8 @@ export default function ProductOverview() {
       await apiService.updateProduct(selectedProduct.id, { ...selectedProduct, quantity: newQty });
       const fresh = await apiService.getProducts();
       setProducts(fresh || []);
+  try { window.dispatchEvent(new Event('inventory_changed')); } catch (e) {}
+  try { localStorage.setItem('inventory_changed_at', String(Date.now())); } catch (e) {}
       setShowPurchase(false);
       setSelectedProduct(null);
       toast.success(`Purchase recorded — ${qty} items purchased`);

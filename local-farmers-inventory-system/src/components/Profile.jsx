@@ -1,11 +1,14 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
 import './AuthModal.css';
 import './Profile.css';
 
 export default function Profile({ onClose }) {
   const { user, logout } = useAuth();
+  const router = useRouter();
+  const closeBtnRef = useRef(null);
   if (!user) return null;
 
   const initials = (() => {
@@ -16,8 +19,20 @@ export default function Profile({ onClose }) {
     return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
   })();
 
+  useEffect(() => {
+    try { closeBtnRef.current && closeBtnRef.current.focus(); } catch (e) {}
+  }, []);
+
   return (
     <div className="profile">
+      <button
+        ref={closeBtnRef}
+        className="close-btn"
+        aria-label="Close profile"
+        onClick={() => onClose?.()}
+      >
+        ×
+      </button>
       <div className="head">
         <div className="avatar">{initials}</div>
         <div>
@@ -28,10 +43,12 @@ export default function Profile({ onClose }) {
       </div>
       <div className="role">ID: {user.id} • {user.isAdmin ? 'Admin' : 'User'}</div>
       <div className="confirm-footer">
-        <button className="cancel-btn" onClick={() => onClose?.()}>Close</button>
-        <button className="edit-btn" onClick={() => { onClose?.(); window.location.href = '/profile'; }}>Edit profile</button>
-        <button className="confirm-btn" onClick={() => { logout(); }}>Logout</button>
+        <button className="edit-btn" onClick={() => { onClose?.(); router.push('/profile'); }}>Edit profile</button>
+        <button className="confirm-btn" onClick={() => { logout(); onClose?.(); }}>Logout</button>
       </div>
     </div>
   );
 }
+
+// autofocus the close button when this component mounts
+Profile.displayName = 'Profile';

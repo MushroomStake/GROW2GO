@@ -37,7 +37,7 @@ function ProductList({ products, onEditProduct }) {
 
         <div className="table-body">
           {sortedProducts.map((product) => (
-            <div key={product.id} className="table-row">
+            <div key={product.id} className="table-row" data-product-id={product.id}>
               <div className="table-cell product-name">
                 {product.name}
               </div>

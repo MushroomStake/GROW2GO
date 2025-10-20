@@ -66,6 +66,18 @@
   background: #f9fafb;
 }
 
+/* Highlight used when a specific product is targeted from a notification */
+.table-row.highlight {
+  animation: highlight-pulse 3s ease-out forwards;
+}
+
+@keyframes highlight-pulse {
+  0% { background: rgba(245,158,11,0.14); transform: translateY(0); }
+  10% { transform: translateY(-2px); }
+  90% { transform: translateY(0); }
+  100% { background: white; }
+}
+
 .table-row:last-child {
   border-bottom: none;
 }

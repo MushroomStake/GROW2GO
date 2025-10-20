@@ -46,7 +46,7 @@ class ApiService {
   }
 
   async getProducts() {
-    const products = await this.request('/products?select=*,category:categories(id,name,color)&is_active=eq.true&order=created_at.desc');
+    const products = await this.request('/products?select=*,category:categories(id,name,color)&is_active=eq.true&order=created_at.desc', { cache: 'no-store' });
     return products.map(product => ({
       id: product.id,
       name: product.name,
@@ -62,7 +62,7 @@ class ApiService {
   }
 
   async getProduct(id) {
-    const products = await this.request(`/products?id=eq.${id}&select=*,category:categories(id,name,color)&is_active=eq.true`);
+    const products = await this.request(`/products?id=eq.${id}&select=*,category:categories(id,name,color)&is_active=eq.true`, { cache: 'no-store' });
     if (products.length === 0) {
       throw new Error('Product not found');
     }
@@ -124,7 +124,7 @@ class ApiService {
   }
 
   async getCategories() {
-    const categories = await this.request('/categories?select=*&order=name.asc');
+    const categories = await this.request('/categories?select=*&order=name.asc', { cache: 'no-store' });
     return categories.map(category => ({
       id: category.id,
       name: category.name,

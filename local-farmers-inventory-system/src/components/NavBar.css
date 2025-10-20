@@ -3,6 +3,12 @@
   background: var(--background, #f8fafc);
   color: var(--foreground, #111827);
   border-bottom: 1px solid #e5e7eb;
+  /* fixed to top so the navbar remains visible while scrolling */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
 }
 .gf-nav-inner{
   max-width: 1100px;
@@ -49,6 +55,17 @@
 .profile-actions a, .profile-actions button{ text-decoration:none; color:#065f46; background:transparent; border:none; cursor:pointer; padding:6px 8px; border-radius:6px; }
 .profile-actions button:hover, .profile-actions a:hover { background: rgba(6,95,70,0.06); }
 
+/* Notification bell */
+.nav-notif{ display:flex; align-items:center; margin-right:25px; }
+/* make the bell button match the profile icon size for consistent alignment */
+.nav-notif .notif-btn{ background:transparent; border:none; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; position:relative; width:28px; height:28px; }
+/* make the notif image fill the same area as the profile icon */
+.notif-icon{ width:25px; height:25px; border-radius:50%; object-fit:contain; display:block; margin:1px; }
+.nav-notif .notif-btn svg{ color:#374151; width:18px; height:18px; }
+.notif-btn:hover{ background: rgba(6,95,70,0.04); border-radius:50%; }
+/* badge sits neatly relative to the 28px control */
+.nav-notif .notif-badge{ position:absolute; top:3px; right:-4px; background:#ef4444; color:#fff; font-size:11px; padding:2px 5px; border-radius:999px; min-width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; }
+
 /* Light variant used on the View Products page to match the white ProductOverview */
 .gf-nav.light{
   background: #ffffff;
@@ -83,6 +100,18 @@
 
   /* nav-controls groups the profile + hamburger tightly */
   .nav-controls{ display:flex; align-items:center; gap:6px; }
+
+  /* Mobile: make the badge smaller and vertically centered above the bell icon */
+  .nav-controls .notif-badge{ top:50%; right:0; transform:translate(50%, -50%); font-size:10px; padding:1px 5px; min-width:16px; height:16px; }
+
+  /* Prepare a pulse animation to use when the count increments (add/remove the `pulse` class in JS) */
+  .notif-badge{ transition: transform 160ms ease, box-shadow 300ms ease; }
+  .notif-badge.pulse{ animation: notif-badge-pulse 900ms cubic-bezier(.2,.8,.2,1); }
+  @keyframes notif-badge-pulse{
+    0%{ transform:translate(50%, -50%) scale(1); box-shadow:0 0 0 0 rgba(239,68,68,0.2); }
+    50%{ transform:translate(50%, -50%) scale(1.16); box-shadow:0 0 0 10px rgba(239,68,68,0.06); }
+    100%{ transform:translate(50%, -50%) scale(1); box-shadow:0 0 0 0 rgba(239,68,68,0); }
+  }
 }
 
 /* Wider screens: increase container and spacing */
@@ -90,8 +119,13 @@
   .gf-nav-inner{ max-width: 1300px; }
 }
 
-/* Desktop: show desktop-only profile and hide mobile-only */
+/* Desktop: show desktop-only profile and hide mobile-only. Also hide any nav-notif placed inside the
+   `.nav-controls` container on wider screens to avoid duplicate bell icons (we render the bell
+   within the profile area for desktop). */
 @media (min-width: 769px){
   .mobile-only{ display:none; }
   .desktop-only{ display:flex; }
+  /* specifically hide notification buttons that live in the nav-controls (these are mobile-only
+     placements and can otherwise visually duplicate the desktop bell) */
+  .nav-controls .nav-notif{ display:none; }
 }

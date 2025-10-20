@@ -1,11 +1,14 @@
 /* Profile modal and page styling */
 .profile { padding: 12px 6px; max-width: 360px; }
+.profile { position: relative; }
 .profile .avatar { width:72px; height:72px; border-radius:12px; background:#f3f4f6; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:28px; color:#0f172a; margin-right:12px; }
 .profile .head { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
 .profile h3 { margin:0; font-size:18px; }
 .profile .meta { color:#6b7280; font-size:13px; margin-bottom:8px; }
 .profile .role { font-size:13px; color:#374151; margin-bottom:12px; }
-.profile .confirm-footer { display:flex; gap:8px; justify-content:flex-end; }
+.profile .confirm-footer { display:flex; gap:8px; justify-content:flex-end; align-items:center; }
+.profile .close-btn{ position:absolute; right:10px; top:8px; background:transparent; border:none; font-size:20px; line-height:1; padding:6px; border-radius:6px; cursor:pointer; color:#374151; }
+.profile .close-btn:focus{ outline:2px solid rgba(6,95,70,0.12); }
 .profile .cancel-btn{ background:transparent; border:1px solid #e6e9ee; color:#374151; padding:8px 12px; border-radius:8px; cursor:pointer; }
 .profile .confirm-btn{ background:#ef4444; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; box-shadow:0 6px 18px rgba(239,68,68,0.12); }
 .profile .edit-btn{ background:#10b981; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; box-shadow:0 6px 18px rgba(16,185,129,0.12); }
@@ -21,6 +24,7 @@
 /* Mobile responsiveness for profile modal and edit page */
 @media (max-width: 640px) {
 	.profile { max-width: 100%; padding: 12px; }
+	.profile .close-btn{ right:8px; top:8px; }
 	.profile .head { flex-direction: column; align-items: center; text-align: center; }
 	.profile .avatar { margin-right: 0; margin-bottom: 10px; width:64px; height:64px; border-radius:50%; font-size:24px; }
 	.profile h3 { font-size:16px; }

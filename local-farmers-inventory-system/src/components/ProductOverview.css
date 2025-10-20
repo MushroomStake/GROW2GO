@@ -53,14 +53,13 @@
 }
 .po-loading{ padding:24px; text-align:center; color:#374151; }
 
-/* Force a light (white) background for the Product Overview section even in dark mode */
-.product-overview,
+/* Keep individual cards white and ensure dark-mode text overrides where needed */
 .product-overview .po-card {
 	background: #ffffff; /* keep cards white */
 	color: #0f172a; /* dark text */
 }
 
-/* Override dark-mode variable-based colors inside this section */
+/* Override dark-mode variable-based colors inside card content */
 .product-overview a,
 .product-overview .po-meta,
 .product-overview .po-qty {
@@ -73,6 +72,6 @@
 	color: #ffffff;
 }
 
-/* Add subtle spacing from the dark page background */
-.product-overview { padding: 18px 16px; border-radius: 8px; }
+/* Remove forced panel styling so the overview uses the global page background */
+.product-overview { border-radius: 0; padding: 0 16px; }
 

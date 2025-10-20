@@ -1,0 +1,58 @@
+/* Notifications modal styles - builds on AuthModal.css classes */
+.notifications-modal{ width:480px; max-width:100%; padding:18px; border-radius:12px; }
+
+/* when positioned as an anchored popup (inline style applied), use a compact width and a subtle shadow */
+.auth-modal.notifications-modal[style]{ box-shadow: 0 18px 48px rgba(2,6,23,0.12); border-radius:12px; padding:14px; }
+
+/* caret pointing to the anchor - using a CSS variable for left offset */
+.auth-modal.notifications-modal[style]::before{
+  /* small diamond rotated to create an upward-pointing caret whose tip aligns to --arrow-left */
+  content: '';
+  position: absolute;
+  left: var(--arrow-left, 32px);
+  top: -8px; /* sit slightly above the top edge so the tip points to the anchor */
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: white;
+  /* subtle rounded corners on the diamond for a softer look */
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(2,6,23,0.08);
+  z-index: 1999;
+}
+
+/* tighten modal content spacing for popover */
+.auth-modal.notifications-modal[style] h3{ margin:0 0 6px 0; }
+.auth-modal.notifications-modal[style] .muted{ margin:0 0 10px 0; color:#6b7280; }
+.notif-list{ display:flex; flex-direction:column; gap:10px; max-height:360px; overflow:auto; margin-top:8px; }
+.notif-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px; border-radius:10px; background:#ffffff; border:1px solid #f3f4f6; }
+.notif-name{ font-weight:600; }
+.notif-meta{ font-size:13px; color:#374151; }
+.notif-actions .link{ color:#0f172a; text-decoration:underline; }
+.notif-empty{ color:#6b7280; padding:18px; text-align:center; }
+.nav-notif{ margin-right:10px; display:inline-flex; align-items:center; }
+.notif-btn{ background:transparent; border:none; padding:6px; border-radius:8px; cursor:pointer; position:relative; display:inline-flex; align-items:center; }
+.notif-btn:hover{ background:rgba(2,6,23,0.04); }
+.notif-badge{ position:absolute; top:0; right:0; transform:translate(35%, -35%); background:#ef4444; color:white; font-size:11px; padding:2px 6px; border-radius:999px; box-shadow:0 4px 10px rgba(239,68,68,0.12); }
+
+/* compact/mobile variant and pulse animation support */
+.notif-badge.pulse{ animation: notif-badge-pulse 900ms cubic-bezier(.2,.8,.2,1); }
+
+@media (max-width:640px){
+  .notifications-modal{ width:100%; padding:12px; border-radius:10px; }
+}
+
+/* Severity visuals */
+.notif-row-link{ text-decoration:none; color:inherit; display:block; border-radius:8px; }
+.notif-row-link:focus{ outline:2px solid rgba(0,0,0,0.08); }
+.severity-critical{ background: linear-gradient(90deg, rgba(239,68,68,0.02), rgba(255,255,255,0)); }
+.severity-medium{ background: linear-gradient(90deg, rgba(245,158,11,0.02), rgba(255,255,255,0)); }
+.notif-severity-dot{ width:10px; height:10px; border-radius:50%; margin-right:10px; flex:0 0 auto; }
+.severity-critical .notif-severity-dot{ background:#ef4444; box-shadow:0 6px 18px rgba(239,68,68,0.08); }
+.severity-medium .notif-severity-dot{ background:#f59e0b; box-shadow:0 6px 18px rgba(245,158,11,0.08); }
+.notif-title{ font-weight:700; margin-bottom:6px; }
+.notif-desc{ font-size:13px; color:#374151; margin-bottom:4px; }
+.notif-row:hover{ transform:translateY(-1px); box-shadow:0 8px 24px rgba(2,6,23,0.06); }
+
+.notif-row .notif-title { display:flex; align-items:center; gap:8px; }
+.notif-row .notif-title .from-badge { font-size:11px; color:#374151; background:transparent; padding:0 6px; border-radius:6px; }
