@@ -17,3 +17,23 @@
 .profile-row label { width:120px; color:#374151; }
 .profile-row input { flex:1; padding:10px 12px; border-radius:8px; border:1px solid #e6e9ee; }
 .profile-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:10px; }
+
+/* Mobile responsiveness for profile modal and edit page */
+@media (max-width: 640px) {
+	.profile { max-width: 100%; padding: 12px; }
+	.profile .head { flex-direction: column; align-items: center; text-align: center; }
+	.profile .avatar { margin-right: 0; margin-bottom: 10px; width:64px; height:64px; border-radius:50%; font-size:24px; }
+	.profile h3 { font-size:16px; }
+	.profile .meta { font-size:14px; }
+	.profile .role { text-align:center; }
+
+	/* Stack footer buttons and make them touch friendly */
+	.profile .confirm-footer { flex-direction: column-reverse; gap:8px; align-items:stretch; }
+	.profile .confirm-footer button { width:100%; padding:12px; }
+
+	/* Profile edit page: stack label + input vertically */
+	.profile-page { padding:14px; margin:12px; }
+	.profile-row { flex-direction: column; align-items:stretch; }
+	.profile-row label { width:100%; margin-bottom:6px; }
+	.profile-row input { width:100%; }
+}

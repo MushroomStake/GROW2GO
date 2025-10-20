@@ -18,7 +18,9 @@ export default function RootLayout({ children }: { children: any }) {
         <Toaster position="bottom-center" />
         <CP>
           <NavBar />
-          {children}
+          <main className="gf-main-container">
+            {children}
+          </main>
         </CP>
       </body>
     </html>

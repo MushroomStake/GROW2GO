@@ -58,3 +58,40 @@
 .gf-nav.light .gf-brand a{ color: #0f172a; }
 .gf-nav.light .gf-links a{ color: #374151; }
 .gf-nav.light .gf-links a:hover{ background: rgba(16,185,129,0.08); color: #065f46; }
+
+/* Mobile styles */
+.mobile-toggle{ display:none; background:transparent; border:none; width:40px; height:40px; align-items:center; justify-content:center; cursor:pointer; }
+.mobile-toggle .hamburger{ display:block; width:22px; height:2px; background:#111827; position:relative; }
+.mobile-toggle .hamburger:before, .mobile-toggle .hamburger:after{ content:''; position:absolute; left:0; right:0; height:2px; background:#111827; }
+.mobile-toggle .hamburger:before{ top:-7px; }
+.mobile-toggle .hamburger:after{ bottom:-7px; }
+
+@media (max-width: 768px){
+  .gf-nav-inner{ padding: 10px 12px; }
+  .gf-links{ display:none; position:absolute; top:64px; left:0; right:0; background:var(--background); flex-direction:column; gap:0; border-top:1px solid #e5e7eb; padding:8px 12px; }
+  .gf-links.open{ display:flex; }
+  .gf-links a, .gf-links button.nav-btn{ width:100%; text-align:left; padding:10px 12px; border-radius:6px; }
+  .gf-brand{ font-size:18px; }
+  .mobile-toggle{ display:flex; }
+  .profile-menu{ right:12px; top:56px; }
+
+  /* show mobile-only profile next to hamburger, hide desktop-only version */
+  .mobile-only{ display:flex; margin-right:6px; align-items:center; }
+  .desktop-only{ display:none; }
+  .mobile-profile-btn{ min-width:40px; padding:6px; border-radius:50%; }
+  .mobile-toggle{ margin-left:4px; }
+
+  /* nav-controls groups the profile + hamburger tightly */
+  .nav-controls{ display:flex; align-items:center; gap:6px; }
+}
+
+/* Wider screens: increase container and spacing */
+@media (min-width: 1200px){
+  .gf-nav-inner{ max-width: 1300px; }
+}
+
+/* Desktop: show desktop-only profile and hide mobile-only */
+@media (min-width: 769px){
+  .mobile-only{ display:none; }
+  .desktop-only{ display:flex; }
+}

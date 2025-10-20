@@ -9,8 +9,10 @@ import { useAuth } from '../context/AuthContext';
 export default function NavBar() {
   const [showAuth, setShowAuth] = React.useState(false);
   const [showProfile, setShowProfile] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [imgError, setImgError] = React.useState(false);
-  const profileRef = React.useRef(null);
+  const profileRefDesktop = React.useRef(null);
+  const profileRefMobile = React.useRef(null);
   const auth = useAuth();
   const user = (auth as any).user;
   const logout = (auth as any).logout;
@@ -34,11 +36,13 @@ export default function NavBar() {
     };
     window.addEventListener('gf_auth_changed', onAuth);
     window.addEventListener('storage', onStorage);
-    // close profile dropdown when clicking outside
+    // close profile dropdown when clicking outside (works for both desktop and mobile profile nodes)
     const onDocClick = (e: MouseEvent) => {
       try {
         const target = e.target as Node;
-        if (profileRef.current && !profileRef.current.contains(target)) {
+        const desktopContains = profileRefDesktop.current && profileRefDesktop.current.contains(target);
+        const mobileContains = profileRefMobile.current && profileRefMobile.current.contains(target);
+        if (!desktopContains && !mobileContains) {
           setShowProfile(false);
         }
       } catch (e) {}
@@ -73,11 +77,48 @@ export default function NavBar() {
           <div className="gf-brand">
             <Link href="/products">GROW2GO</Link>
           </div>
-          <div className="gf-links">
+
+          {/* mobile controls: profile + hamburger */}
+          <div className="nav-controls">
+          {/* mobile-only profile icon placed alongside the hamburger on small screens (profile first, then hamburger) */}
+          {effectiveUser && (
+            <div className="nav-profile mobile-only" ref={profileRefMobile as any}>
+              <button className="nav-btn profile-btn mobile-profile-btn" onClick={() => setShowProfile((s: boolean) => !s)}>
+                {(!imgError) ? (
+                  <img src="/icons/profile.png" alt="Profile" className="profile-icon" onError={() => setImgError(true)} />
+                ) : (
+                  <div className="profile-initials">{(() => {
+                    const name = (effectiveUser as any)?.name || (effectiveUser as any)?.email || '';
+                    const parts = name.split(/\s+/).filter(Boolean);
+                    if (parts.length === 0) return '?';
+                    if (parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+                    return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+                  })()}</div>
+                )}
+              </button>
+              {showProfile && (
+                <div className="profile-menu">
+                  <div className="profile-item">{(effectiveUser as any)?.name || (effectiveUser as any)?.email}</div>
+                  <div className="profile-item small">{(effectiveUser as any)?.email}</div>
+                  <div className="profile-item link" onClick={() => { setShowProfile(false); window.location.href = '/profile'; }}>Profile</div>
+                  <div className="profile-actions">
+                    <button onClick={handleLogout}>Logout</button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            )}
+
+          <button className="mobile-toggle" aria-label="Toggle menu" onClick={() => setMobileOpen((s: boolean) => !s)}>
+            <span className="hamburger" aria-hidden="true" />
+          </button>
+          </div>
+          <div className={`gf-links ${mobileOpen ? 'open' : ''}`} role="navigation">
             <Link href="/products">Products</Link>
             {isAdmin && <Link href="/inventory">Inventory Dashboard</Link>}
             {effectiveUser ? (
-              <div className="nav-profile" ref={profileRef}>
+              <div className="nav-profile desktop-only" ref={profileRefDesktop as any}>
                 <button className="nav-btn profile-btn" onClick={() => setShowProfile((s: boolean) => !s)}>
                   {(!imgError) ? (
                     <img src="/icons/profile.png" alt="Profile" className="profile-icon" onError={() => setImgError(true)} />
